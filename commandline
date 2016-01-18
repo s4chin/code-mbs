@@ -1,0 +1,32 @@
+>>> import requests, humanize
+>>> repos = requests.get("https://api.github.com/users/s4chin/repos")
+>>> repos = repos.json()
+>>> len(repos)
+30
+>>> from collections import COunter
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: cannot import name COunter
+>>> from collections import Counter
+>>> langs = []
+>>> for repo in repos:
+...     langs.append(Counter((requests.get(repo["languages_url"])).json()))
+... 
+>>> len(langs)
+30
+>>> res = Counter({})
+>>> for lang in langs:
+...     res+=lang
+... 
+>>> res
+Counter({u'C++': 2519301, u'JavaScript': 1460983, u'CSS': 747172, u'HTML': 722099, u'Python': 651560, u'CoffeeScript': 237667, u'Objective-C++': 133400, u'CMake': 65387, u'Objective-C': 14114, u'Shell': 10093, u'C': 6883, u'LLVM': 6181, u'Makefile': 5407, u'GLSL': 5223, u'Ruby': 689})
+>>> dict(res)
+{u'GLSL': 5223, u'C': 6883, u'LLVM': 6181, u'CMake': 65387, u'Objective-C++': 133400, u'Python': 651560, u'JavaScript': 1460983, u'Makefile': 5407, u'C++': 2519301, u'CoffeeScript': 237667, u'Objective-C': 14114, u'HTML': 722099, u'Shell': 10093, u'Ruby': 689, u'CSS': 747172}
+>>> res = dict(res)
+>>> for poop in res:
+...     res[poop] = humanize.naturalsize(res[poop])
+... 
+>>> res
+{u'GLSL': '5.2 kB', u'C': '6.9 kB', u'LLVM': '6.2 kB', u'CMake': '65.4 kB', u'Objective-C++': '133.4 kB', u'Python': '651.6 kB', u'JavaScript': '1.5 MB', u'Makefile': '5.4 kB', u'C++': '2.5 MB', u'CoffeeScript': '237.7 kB', u'Objective-C': '14.1 kB', u'HTML': '722.1 kB', u'Shell': '10.1 kB', u'Ruby': '689 Bytes', u'CSS': '747.2 kB'}
+>>> 
+
